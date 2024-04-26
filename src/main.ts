@@ -12,6 +12,10 @@ async function main() {
 
   app.listen(
     {
+      host:
+        env.get('NODE_ENV').default('development').asString() === 'production'
+          ? '0.0.0.0'
+          : void 0,
       port,
     },
     function (_error, address) {
