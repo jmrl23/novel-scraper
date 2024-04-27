@@ -39,7 +39,7 @@ export default class NovelService {
       if (blacklist.includes(child.tagName)) return '';
       return child.textContent ?? '';
     });
-    const content = lines.filter((line) => line?.length > 0);
+    const content = lines.filter((line) => line?.trim()?.length > 0);
 
     await this.cacheService.set(
       `novel:${JSON.stringify({ url, selector })}`,
