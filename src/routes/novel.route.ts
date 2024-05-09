@@ -1,5 +1,6 @@
 import { type FastifyInstance } from 'fastify';
 import NovelService from '../services/novel.service';
+import authorizationPrehandler from '../handlers/authorization.prehandler';
 
 export const autoPrefix = '/novel';
 
@@ -10,7 +11,6 @@ export default (async function (instance: FastifyInstance) {
     method: 'POST',
     url: '/',
     schema: {
-      security: [],
       tags: ['novel'],
       body: {
         type: 'object',
@@ -18,13 +18,17 @@ export default (async function (instance: FastifyInstance) {
         properties: {
           selector: {
             type: 'string',
+            default: '.chapter-content',
           },
           url: {
             type: 'string',
+            default:
+              'https://animedaily.net/mushoku-tensei-novel/volume-1-prologue.html',
           },
         },
       },
     },
+    preHandler: [authorizationPrehandler],
     async handler(request) {
       const { selector, url } = request.body as {
         selector: string;
